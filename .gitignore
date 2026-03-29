@@ -1,0 +1,86 @@
+# =========================
+# 🔐 ENV FILES (VERY IMPORTANT)
+# =========================
+.env
+.env.*
+.env.*.local
+!.env.example
+
+# =========================
+# 📦 NODE MODULES
+# =========================
+node_modules/
+
+# =========================
+# 🧾 LOG FILES
+# =========================
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+# 💻 SYSTEM FILES
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# 🧪 TEST / COVERAGE
+# =========================
+coverage/
+.nyc_output/
+
+# =========================
+# ⚙️ BUILD FILES
+# =========================
+dist/
+build/
+.next/
+out/
+
+# =========================
+# 🔧 CACHE FILES
+# =========================
+.cache/
+.parcel-cache/
+.eslintcache
+
+# =========================
+# 🧠 IDE / EDITOR FILES
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# 🐳 DOCKER (OPTIONAL)
+# =========================
+docker-compose.override.yml
+
+# =========================
+# 🔑 SECRETS / KEYS
+# =========================
+*.pem
+*.key
+*.crt
+
+# =========================
+# 📦 TEMP FILES
+# =========================
+tmp/
+temp/
+
+# =========================
+# 🧾 DATABASE FILES (if local)
+# =========================
+*.sqlite
+*.db
+
+# =========================
+# 🚀 PM2 FILES
+# =========================
+.pm2/
