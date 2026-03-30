@@ -7,8 +7,11 @@ import userRouter from './routes/user.routes.js';
 import subscriptionRouter from './routes/subscription.routes.js';
 import connectDB from './database/mongodb.js';
 import errorMiddleware from './middlewares/error.middleware.js';
+import cors from 'cors';
 
+// ✅ Create Express app
 const app = express();
+app.use(cors());
 // const PORT =  5000;
 
 // ✅ Middleware

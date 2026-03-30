@@ -1,43 +1,66 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
-    { 
-      name :
-       {
-        type : String,
-        required : true ,
-        trim : true,
-        minLength : 3,
-        maxLength : 50
-       },
+  {
+    name: {
+      type: String,
+      required: [true, "Name is required"],
+      trim: true,
+      minlength: 2,
+      maxlength: 50,
+    },
 
-       email :
-       {
-        type : String ,
-        required : true ,
-        unique : true ,
-        trim : true ,
-        lowercase : true ,
-        minLength : 5,
-        maxLength : 255 ,
-        match : /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-        index : true 
-       },
+    email: {
+      type: String,
+      required: [true, "Email is required"],
+      unique: true,
+      trim: true,
+      lowercase: true,
+      minlength: 5,
+      maxlength: 255,
+      match: [/^\S+@\S+\.\S+$/, "Please use a valid email address"],
+      index: true,
+    },
 
+    password: {
+      type: String,
+      required: [true, "Password is required"],
+      minlength: 6,
+      maxlength: 1024,
+      select: false, // 🔥 VERY IMPORTANT (hide password)
+    },
 
-       password :
-       {
-        type : String ,
-        required  : true ,
-        minLength : 6, 
-        maxLength : 1024,
-       }
-    }, 
-    {
-        Timestamps: true 
+    // 🔐 Security fields
+    failedLoginAttempts: {
+      type: Number,
+      default: 0,
+    },
 
-    }
-)
+    lockUntil: {
+      type: Date,
+    },
 
-const User = mongoose.model ("User",userSchema);
-export default User ;
+    lastLogin: {
+      type: Date,
+    },
+
+    // 👤 Role-based system (future)
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
+    },
+
+    //  Email verification (future use)
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  {
+    timestamps: true, 
+  }
+);
+
+const User = mongoose.model("User", userSchema);
+export default User;
