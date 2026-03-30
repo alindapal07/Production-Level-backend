@@ -6,14 +6,16 @@ import authRouter from './routes/auth.routes.js';
 import userRouter from './routes/user.routes.js';
 import subscriptionRouter from './routes/subscription.routes.js';
 import connectDB from './database/mongodb.js';
+import errorMiddleware from './middlewares/error.middleware.js';
 
 const app = express();
 // const PORT =  5000;
 
 // ✅ Middleware
-app.use(morgan('dev'));
-app.use(express.json());
-app.use(cookieParser());
+app.use(morgan('dev')); // Logging middleware
+app.use(express.json()); // Body parsing middleware for JSON
+app.use(cookieParser()); // Cookie parsing middleware
+
 
 
 
@@ -21,6 +23,8 @@ app.use(cookieParser());
 app.use('/api/V1/auth',authRouter);
 app.use('/api/V1/users',userRouter);
 app.use('/api/V1/subscriptions',subscriptionRouter);
+
+app.use(errorMiddleware); // Error handling middleware
 
 // ✅ Routes
 app.get('/', (req, res) => {

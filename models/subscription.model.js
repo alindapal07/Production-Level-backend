@@ -55,8 +55,14 @@ currency : {
         validator : (value)=>value > this.startDate ,
         message : " End date must be after start date "
     }
- }
-
+ },
+  users :
+  {
+    type : mongoose.Schema.Types.ObjectId,
+    ref : "User",
+    required : true ,
+    index : true 
+  }
 
     },
     {
@@ -65,6 +71,27 @@ currency : {
 
 )
 
+subscriptionSchema.pre("save", function(next){
+    if (!this.renewalDate)
+    {
+        const renewalPeriods ={
+            daily :1,
+            weekly : 7,
+            monthly : 30,
+            yearly : 365
+            };
 
-const Subscription =mongoose. model ("Subscription", subscriptionSchema);
-export default Subscription ; 
+        this.renewalDate = this.startDate ;
+        this.renewalDate.setDate (this.renewalDate.getDate()+ renewalPeriods[this.frequency] || 30);    
+    }
+
+    if(this.renewalDate <new Date())
+    {
+        this.status = "inactive";
+    }
+    next();
+})
+
+
+const Subscription = mongoose.model ("Subscription", subscriptionSchema);
+export default Subscription ;

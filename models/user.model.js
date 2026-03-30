@@ -20,10 +20,11 @@ const userSchema = new mongoose.Schema(
         lowercase : true ,
         minLength : 5,
         maxLength : 255 ,
-        match : /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
+        match : /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
+        index : true 
        },
 
-       
+
        password :
        {
         type : String ,
