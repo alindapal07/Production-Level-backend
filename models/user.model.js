@@ -30,7 +30,6 @@ const userSchema = new mongoose.Schema(
       select: false, // 🔥 VERY IMPORTANT (hide password)
     },
 
-    // 🔐 Security fields
     failedLoginAttempts: {
       type: Number,
       default: 0,

@@ -132,6 +132,7 @@ export const signUp = async (req, res, next) => {
       id: newUser[0]._id,
       email: newUser[0].email,
       name: newUser[0].name,
+      role : newUser[0].role
     };
     //Creating token
     const token = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
@@ -208,6 +209,7 @@ export const signIn = async (req, res, next) => {
       id: user._id,
       email: user.email,
       name: user.name,
+      role : user.role
     };
 
     const token = jwt.sign(payload, JWT_SECRET, {
