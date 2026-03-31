@@ -6,12 +6,14 @@ import authRouter from './routes/auth.routes.js';
 import userRouter from './routes/user.routes.js';
 import subscriptionRouter from './routes/subscription.routes.js';
 import connectDB from './database/mongodb.js';
-import errorMiddleware from './middlewares/error.middleware.js';
+import errorMiddleware from './middleware/error.middleware.js';
 import cors from 'cors';
+import arjectMiddleware from './middleware/arject.middleware.js';
 
 // ✅ Create Express app
 const app = express();
 app.use(cors());
+app.use(arjectMiddleware);
 // const PORT =  5000;
 
 // ✅ Middleware
@@ -36,7 +38,7 @@ app.get('/', (req, res) => {
 });
 
 app.listen(PORT, async () => {
-    console.log(`Server is running on http://localhost:${process.env.PORT}}`);
+    console.log(`Server is running on http://localhost:${PORT}}`);
     await connectDB();
 
 });
