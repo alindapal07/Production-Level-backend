@@ -12,4 +12,6 @@ export const {
   JWT_EXPIRES_IN,
   ARJECT_KEY,
   ARJECT_ENV,
+  EMAIL_USER,
+  EMAIL_PASS
 } = process.env;

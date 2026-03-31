@@ -4,6 +4,11 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET, JWT_EXPIRES_IN } from "../config/env.js";
 import dotenv from "dotenv";
+import crypto from "crypto";
+import sendEmail from "../utils/sendEmail.js";
+// import { sendVerificationEmail } from "../utils/emailService.js";
+
+
 dotenv.config();
 export const signUp = async (req, res, next) => {
   // Implement signup logic here
@@ -122,9 +127,12 @@ export const signUp = async (req, res, next) => {
         message: nameError,
       });
     }
+
+    //create verification token for email verification (future use)
+    const verificationToken = crypto.randomBytes(32).toString("hex");
     // Create the User
     const newUser = await User.create(
-      [{ name: name, email: normalizedEmail, password: hashedPassword }],
+      [{ name: name, email: normalizedEmail, password: hashedPassword ,verificationToken : verificationToken }],
       { session },
     );
     // Creating payload for JWT token
@@ -134,6 +142,20 @@ export const signUp = async (req, res, next) => {
       name: newUser[0].name,
       role : newUser[0].role
     };
+    // create verification url (future use)
+     const verificationUrl = `${req.protocol}://${req.get("host")}/api/auth/verify-email/${verificationToken}`;
+     // send mail to user (future use)
+       await sendEmail(
+        newUser[0].email,
+        "Verify your email",
+        `Please click the following link to verify your email: ${verificationUrl}`,
+       )
+       .then(()=>{
+        console.log("Verification email sent");
+       })
+       .catch((err)=>{
+        console.error("Failed to send verification email:", err);
+       });
     //Creating token
     const token = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
     // Commit the transaction
@@ -211,7 +233,28 @@ export const signIn = async (req, res, next) => {
       name: user.name,
       role : user.role
     };
-
+    //check if userEmail is verified (future use)
+    if (!user.isVerified)
+    {
+       // create verification url (future use)
+     const verificationUrl = `${req.protocol}://${req.get("host")}/api/auth/verify-email/${user.verificationToken}`;
+     // send mail to user (future use)
+       await sendEmail(
+        user.email,
+        "Verify your email",
+        `Please click the following link to verify your email: ${verificationUrl}`,
+       )
+       .then(()=>{
+        console.log("Verification email sent");
+       })
+       .catch((err)=>{
+        console.error("Failed to send verification email:", err);
+       }) 
+      return res.status (403).json({
+        success : false ,
+        message : "Please verify your email to login"
+      })
+    }
     const token = jwt.sign(payload, JWT_SECRET, {
       expiresIn: JWT_EXPIRES_IN,
     });
